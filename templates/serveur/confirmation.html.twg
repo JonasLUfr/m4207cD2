@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ServeurController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper" align="center">
+        <h1>Salut {{ email }}! ✅</h1>
+        <div id="haut"><h2 align="center">JonasLu's blog </h2></div>
+
+     Félicitations, vous avez terminé l'inscription:
+    <ul>
+        <li>Le fichier que vous avez envoyé a été enregistré par ce site Web！</li>
+		<li>Un e-mail de confirmation a été envoyé dans votre boîte mail: {{ email }}</li>
+		<li>Veuillez cliquer sur le bouton ci-dessous pour revenir à la page d'accueil！</li>
+    </ul>
+	<tr>
+		<td><a href="/index.html.twig">
+		<input type="button" class="btn btn-danger" id="btn1" value="retour"/></a>
+		</td>
+	</tr>
+</div>
+{% endblock %}

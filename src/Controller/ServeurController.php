@@ -17,4 +17,17 @@ class ServeurController extends AbstractController
             'controller_name' => 'ServeurController',
         ]);
     }
+    /**
+     * @Route("/confirmation", name="confirmation")
+     */
+    public function confirmation(Request $request): Response
+    {
+        $nom = $request->request->get("nom");
+		$email = $request->request->get("email");
+        return $this->render('serveur/confirmation.html.twig', [
+            'title' => "Confirmation",
+			'nom' => "$nom",
+			'email' => "$email",
+        ]);
+    }
 }

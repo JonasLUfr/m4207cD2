@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 class ServeurController extends AbstractController
 {
@@ -22,11 +23,9 @@ class ServeurController extends AbstractController
      */
     public function confirmation(Request $request): Response
     {
-        $nom = $request->request->get("nom");
 		$email = $request->request->get("email");
         return $this->render('serveur/confirmation.html.twig', [
             'title' => "Confirmation",
-			'nom' => "$nom",
 			'email' => "$email",
         ]);
     }

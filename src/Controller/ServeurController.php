@@ -25,10 +25,13 @@ class ServeurController extends AbstractController
     {
 		$nom = $request->request->get("nom");
         $email = $request->request->get("email");
+
+
+        
         return $this->render('serveur/confirmation.html.twig', [
             'title' => "Confirmation",
-            'nom' => "$nom",
-			'email' => "$email",
+            'nom' => $nom,
+			'email' => $email,
         ]);
     }
 }

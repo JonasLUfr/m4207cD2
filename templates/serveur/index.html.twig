@@ -11,45 +11,15 @@
 <div class="example-wrapper" align="center">
         <h1>Hello {{ controller_name }}! ✅</h1>
         <div id="haut"><h2 align="center">JonasLu's blog </h2></div>
-<form action="/confirmation" method="post"> 
-  <fieldset>
-    <legend>Veuillez Login votre compte svp: </legend>
-    <div class="form-group row">
-      <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
-      <div class="col-sm-10">
-        <input type="text" readonly="" class="form-control-plaintext" id="staticEmail" value="email@example.com">
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="exampleInputEmail1" class="form-label mt-4">Email address</label>
-      <input name="email" type="mail" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-      <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-    </div>
-    <div class="form-group">
-      <label for="exampleInputEmail1" class="form-label mt-4">Votre Login</label>
-      <input name="nom" type="mail" class="form-control" aria-describedby="emailHelp" placeholder="Enter User Name">
-      <small id="emailHelp" class="form-text text-muted">We'll never share your name with anyone else.</small>
-    </div>
-    <div class="form-group">
-      <label for="exampleInputPassword1" class="form-label mt-4">Password</label>
-      <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-    </div>
-    </fieldset>
-    <fieldset class="form-group">
-      <legend class="mt-4">Site Politique de confidentialité</legend>
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-        <label class="form-check-label" for="flexCheckDefault">
-          Accepter
-        </label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked="">
-        <label class="form-check-label" for="flexCheckChecked">
-            Refuser
-        </label>
-      </div>
-    </fieldset>
+<form action="/confirmation" method="post" align="center"> 
+   <p>
+       <label for="pseudo">Votre Login :</label>
+       <input type="text" name="nom" />
+       
+       <br />
+       <label for="pass">Votre mot de passe :</label>
+       <input type="password" name="password" />
+   </p>
     <td>
     <button type="submit" class="btn btn-primary">Submit</button>
     <input type="reset" class="btn btn-danger" value="Recommencer"/>

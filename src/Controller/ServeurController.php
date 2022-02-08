@@ -47,4 +47,27 @@ class ServeurController extends AbstractController
             'txt' => $txt,
         ]);
     }
+        /**
+     * @Route("/afficher_inscription", name="afficher_inscription")
+     */
+    public function afficher_inscription(): Response  //pour éviter valeur rendre est NULL
+    {
+        return $this->render('serveur/inscription.html.twig');
+    }
+    /**
+     * @Route("/inscription", name="inscription")
+     */
+    public function inscription(Request $request,EntityManagerInterface $manager): Response
+    {
+		$recupnom = $request->request->get("nom"); //recuperation de valeur saisir
+        $recuppassword = $request->request->get("password");
+        $nom = new Utilisateur ();  //création d'un nouvel object
+        $nom -> setLogin($recupnom);
+        $nom -> setPassword($recuppassword);
+        $manager -> persist($nom);
+        $manager -> flush();
+        
+        
+        return $this->redirectToRoute ('serveur');
+    }
 }

@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}inscription de utilisateurs{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper" align="center">
+        <div id="haut"><h2 align="center">Sign In JonasLu's blog </h2></div>
+<form action="/inscription" method="post" align="center"> 
+   <p>
+       <label for="pseudo">Votre Login :</label>
+       <input type="text" name="nom" />
+       
+       <br />
+       <label for="pass">Votre mot de passe :</label>
+       <input type="password" name="password" />
+   </p>
+    <td>
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <input type="reset" class="btn btn-danger" value="Recommencer"/>
+    </td>
+	</tr>
+</div>
+{% endblock %}

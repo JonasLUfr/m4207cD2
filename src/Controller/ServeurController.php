@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
-
+use App\Entity\Utilisateur;
 class ServeurController extends AbstractController
 {
     /**
@@ -27,17 +27,22 @@ class ServeurController extends AbstractController
 		$nom = $request->request->get("nom");
         $password = $request->request->get("password");
 
-        $utilisateur = $manager -> getRepository(Utilisateur::class) -> findOneBy([ ’Utilisateur’ => ‘nom’]);)
+        $utilisateur = $manager -> getRepository(Utilisateur::class) -> findOneBy([ 'Login' => $nom ]);
         
-        if($nom == "admin"){
-            $txt = "valide!";
+        if($utilisateur == NULL){
+            $txt = "Non valide!Vous n'avez pas le droit entre dans cette Page!!";
         }
         else{
-            $txt = "Non valide!Vous n'avez pas le droit entre dans cette Page!!";
+            if($utilisateur -> getPassword() == $password){
+                $txt = "Good Password Welcome";
+            }
+            else{
+                $txt = "Bad Password!";
+            }
         }
 
         return $this->render('serveur/confirmation.html.twig', [
-            'title' => "Confirmation",
+            'title' => "Comfimation",
             'nom' => $nom,
             'txt' => $txt,
         ]);

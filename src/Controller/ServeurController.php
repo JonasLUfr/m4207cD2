@@ -68,6 +68,19 @@ class ServeurController extends AbstractController
         $manager -> flush();
         
         
-        return $this->redirectToRoute ('serveur');
+        return $this->redirectToRoute ('list_inscription');
+    }
+    /**
+     * @Route("/list_inscription", name="list_inscription")
+     */
+    public function list_inscription(Request $request,EntityManagerInterface $manager): Response
+    {
+		$list_inscription = $manager -> getRepository(Utilisateur::class) -> findAll();//recuperation de valeur dans Utilisateur
+        
+        //Valeur de retour
+        return $this->render('serveur/list.html.twig',[
+            'list_inscription' => $list_inscription,
+        ]);
+        
     }
 }

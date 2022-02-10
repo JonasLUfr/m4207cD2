@@ -8,6 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Utilisateur;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 class ServeurController extends AbstractController
 {
     /**
@@ -75,8 +76,19 @@ class ServeurController extends AbstractController
      */
     public function list_inscription(Request $request,EntityManagerInterface $manager): Response
     {
-		$list_inscription = $manager -> getRepository(Utilisateur::class) -> findAll();//recuperation de valeur dans Utilisateur
+        //Valeur de retour
+        return $this->render('serveur/list.html.twig',[
+            'list_inscription' => $list_inscription,
+        ]);
         
+    }
+    /**
+     * @Route("/session", name="session")
+     */
+    public function session(Request $request,EntityManagerInterface $manager,SessionInterface $session): Response
+    {
+		$vs = $session -> get("Id");
+        $monutilisateur = $manager -> getRepository(Utilisateur::class)->findOneById($userId);
         //Valeur de retour
         return $this->render('serveur/list.html.twig',[
             'list_inscription' => $list_inscription,

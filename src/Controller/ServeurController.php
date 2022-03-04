@@ -23,22 +23,34 @@ class ServeurController extends AbstractController
     /**
      * @Route("/confirmation", name="confirmation")
      */
-    public function confirmation(Request $request,EntityManagerInterface $manager): Response
+    public function confirmation(Request $request,EntityManagerInterface $manager,SessionInterface $session): Response
     {
 		$nom = $request->request->get("nom");
         $password = $request->request->get("password");
-
+        $vs = $session -> get("nomsession");
         $utilisateur = $manager -> getRepository(Utilisateur::class) -> findOneBy([ 'Login' => $nom ]);
-        
+        //$utilisateur = $manager -> getRepository(Utilisateur::class)-> findOneById($userId);
         if($utilisateur == NULL){
             $txt = "Non valide!Vous n'avez pas le droit entre dans cette Page!!";
         }
         else{
             if($utilisateur -> getPassword() == $password){
-                $txt = "Good Password Welcome";
+                if($utilisateur->getId() == 1){
+                    $txt = "Good Password Welcome Admin";
+                    $val=44;
+                    $session -> set("nomsession",$val);
+                    $utilisateur->getId();
+                }
+                else{
+                    $txt = "Good Password! Welcome user";
+                    $val=44;
+                    $session -> set("nomsession",$val);
+                    $session->clear();
+                }
             }
             else{
                 $txt = "Bad Password!";
+                $session->clear();
             }
         }
 
@@ -48,7 +60,7 @@ class ServeurController extends AbstractController
             'txt' => $txt,
         ]);
     }
-        /**
+    /**
      * @Route("/afficher_inscription", name="afficher_inscription")
      */
     public function afficher_inscription(): Response  //pour éviter valeur rendre est NULL
@@ -74,25 +86,31 @@ class ServeurController extends AbstractController
     /**
      * @Route("/list_inscription", name="list_inscription")
      */
-    public function list_inscription(Request $request,EntityManagerInterface $manager): Response
+    public function list_inscription(Request $request,EntityManagerInterface $manager,SessionInterface $session): Response
     {
-        //Valeur de retour
-        return $this->render('serveur/list.html.twig',[
-            'list_inscription' => $list_inscription,
-        ]);
+        $vs = $session -> get("nomsession");
+        if($vs == NULL){
+            return $this->redirectToRoute ('serveur');
+        }
+        else{
+            $list_inscription = $manager -> getRepository(Utilisateur::class) -> findAll();//recuperation de valeur dans Utilisateur
+            //Valeur de retour
+            return $this->render('serveur/list.html.twig',[
+                'list_inscription' => $list_inscription,
+            ]);
+        }
+     
         
     }
     /**
-     * @Route("/session", name="session")
+     * @Route("/logout", name="logout")
      */
-    public function session(Request $request,EntityManagerInterface $manager,SessionInterface $session): Response
+    public function logout(Request $request,SessionInterface $session): Response
     {
-		$vs = $session -> get("Id");
-        $monutilisateur = $manager -> getRepository(Utilisateur::class)->findOneById($userId);
-        //Valeur de retour
-        return $this->render('serveur/list.html.twig',[
-            'list_inscription' => $list_inscription,
+        $vs = $session -> get("nomsession");
+        $session->clear();
+        return $this->render('serveur/logout.html.twig', [
+            'txt' => 'Vous avez bien quitté la session Merci!!'
         ]);
-        
     }
 }

@@ -20,7 +20,7 @@
       <th scope="row">{{item.id}}</th>
       <td>{{item.login}}</td>
       <td>{{item.password}}</td>
-      <td>Supprimer</td>
+      <td><a href="/supprimerUtilisateur/{{ item.id }}" target="_blank"> <input type="button" class="btn btn-danger" value="Supprimer"> </a></td>
     </tr>
     {% endfor %} <!--Arreter de création de tableau-->
   </tbody>

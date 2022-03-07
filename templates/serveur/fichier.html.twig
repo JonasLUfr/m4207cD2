@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter le ficher!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper" align="center">
+        <h1>Bonjour {{ user }}! Vous pouvez ajouter les fichiers ici</h1>
+        <div id="haut"><h2 align="center">JonasLu's blog </h2></div>
+<form action="/confirmation" method="post" align="center"> 
+        <form>
+            <div class="form-group">
+            <label for="formFile" class="form-label mt-4">file input</label>
+            <input class="form-control" type="file" id="formFile">
+            <input type="button" class="btn btn-danger" id="btn1" value="retour"/></a>
+        </form>
+</form>
+</div>
+{% endblock %}

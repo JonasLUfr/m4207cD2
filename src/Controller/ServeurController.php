@@ -113,4 +113,13 @@ class ServeurController extends AbstractController
             'txt' => 'Vous avez bien quitté la session Merci!!'
         ]);
     }
+    /**
+    * @Route("/supprimerUtilisateur/{id}",name="supprimer_Utilisateur")
+    */
+    public function supprimerUtilisateur(EntityManagerInterface $manager,Utilisateur $editutil): Response {
+        $manager->remove($editutil);
+        $manager->flush();
+        // Affiche de nouveau la liste des utilisateurs
+        return $this->redirectToRoute ('list_inscription');
+    }
 }

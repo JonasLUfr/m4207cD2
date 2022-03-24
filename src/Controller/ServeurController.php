@@ -122,4 +122,33 @@ class ServeurController extends AbstractController
         // Affiche de nouveau la liste des utilisateurs
         return $this->redirectToRoute ('list_inscription');
     }
+
+    /**
+     * @Route("/afficher_upload", name="afficher_upload")
+     */
+    public function afficher_upload(): Response  //pour éviter valeur rendre est NULL
+    {
+        return $this->render('serveur/upfichier.html.twig');
+    }
+    /**
+    * @Route("/traitementdufichier",name="traitementdufichier")
+    */
+    public function traitementdufichier(Request $request): Response 
+    {
+       $uploads_dir = '/home/etudrt/RunnianLU/public/uploads';
+        $tmp_name = $_FILES["myfile"]["tmp_name"];
+        // basename() peut empêcher les attaques de système de fichiers;
+        // la validation/assainissement supplémentaire du nom de fichier peut être approprié
+        $name = basename($_FILES["myfile"]["name"]);
+        if(move_uploaded_file($tmp_name, "$uploads_dir/$name")){
+            $txt = "Bien passé! Le fichier que vous avez envoyé a été enregistré par ce site Web!";
+        }
+        else{
+            $txt = "Oops Erreur!";
+        }
+        return $this->render('serveur/fichierconfirmation.html.twig',[
+            'txt' => $txt,
+        ]);
+        /*return $this->redirectToRoute ('list_inscription');*/
+    }
 }

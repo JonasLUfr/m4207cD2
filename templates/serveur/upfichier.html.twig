@@ -9,14 +9,15 @@
 </style>
 
 <div class="example-wrapper" align="center">
-        <h1>Bonjour {{ user }}! Vous pouvez ajouter les fichiers ici</h1>
+        <h1>Bonjour! Vous pouvez ajouter les fichiers ici</h1>
         <div id="haut"><h2 align="center">JonasLu's blog </h2></div>
-<form action="/confirmation" method="post" align="center"> 
+<form action="/traitementdufichier" method="post" enctype="multipart/form-data" align="center"> 
         <form>
             <div class="form-group">
             <label for="formFile" class="form-label mt-4">file input</label>
-            <input class="form-control" type="file" id="formFile">
-            <input type="button" class="btn btn-danger" id="btn1" value="retour"/></a>
+            <input class="form-control" type="file" name="myfile">
+            
+            <button type="submit" class="btn btn-primary">Submit</button>
         </form>
 </form>
 </div>

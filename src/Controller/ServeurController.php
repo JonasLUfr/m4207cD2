@@ -9,7 +9,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Utilisateur;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use App\Entity\Document;
 class ServeurController extends AbstractController
+
 {
     /**
      * @Route("/serveur", name="serveur")
@@ -133,15 +135,22 @@ class ServeurController extends AbstractController
     /**
     * @Route("/traitementdufichier",name="traitementdufichier")
     */
-    public function traitementdufichier(Request $request): Response 
+    public function traitementdufichier(Request $request,EntityManagerInterface $manager): Response 
     {
-       $uploads_dir = '/home/etudrt/RunnianLU/public/uploads';
+        /*$recupfichier = $request->request->get("myfile"); //recuperation de valeur saisir*/
+        $uploads_dir = '/home/etudrt/RunnianLU/public/uploads';
         $tmp_name = $_FILES["myfile"]["tmp_name"];
         // basename() peut empêcher les attaques de système de fichiers;
         // la validation/assainissement supplémentaire du nom de fichier peut être approprié
         $name = basename($_FILES["myfile"]["name"]);
         if(move_uploaded_file($tmp_name, "$uploads_dir/$name")){
             $txt = "Bien passé! Le fichier que vous avez envoyé a été enregistré par ce site Web!";
+            $myfile = new Document ();  //création d'un nouvel object dans entity Document
+            $myfile -> setChemin($name);
+            $myfile -> setDate(new \DateTime('now'));
+            $myfile -> setActif(true);
+            $manager -> persist($myfile);
+            $manager -> flush();
         }
         else{
             $txt = "Oops Erreur!";

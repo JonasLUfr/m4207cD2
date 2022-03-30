@@ -10,6 +10,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Utilisateur;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Entity\Document;
+use App\Entity\Acces;
+use App\Entity\Authorisation;
 class ServeurController extends AbstractController
 
 {
@@ -39,12 +41,14 @@ class ServeurController extends AbstractController
             if($utilisateur -> getPassword() == $password){
                 if($utilisateur->getId() == 1){
                     $txt = "Good Password Welcome Admin";
-                    $val=44;
+                    $userId = $utilisateur->getId();
+                    $val=$userId;
                     $session -> set("nomsession",$val);
-                    $utilisateur->getId();
+                    
                 }
                 else{
                     $txt = "Good Password! Welcome user";
+                    $userId = $utilisateur->getId();
                     $val=44;
                     $session -> set("nomsession",$val);
                     $session->clear();
@@ -128,14 +132,24 @@ class ServeurController extends AbstractController
     /**
      * @Route("/afficher_upload", name="afficher_upload")
      */
-    public function afficher_upload(): Response  //pour éviter valeur rendre est NULL
+    public function afficher_upload(Request $request,EntityManagerInterface $manager,SessionInterface $session): Response  //pour éviter valeur rendre est NULL
     {
-        return $this->render('serveur/upfichier.html.twig');
+        $vs = $session -> get("nomsession"); //pour éviter les users ne sont pas login
+        if($vs == NULL){
+            return $this->redirectToRoute ('serveur');
+        }
+        else{
+            $utilisateur = $manager -> getRepository(Utilisateur::class)->findOneById($vs);
+            $usernom = $utilisateur->getLogin();  //récupérer le nom dans la sessions succès!
+            return $this->render('serveur/upfichier.html.twig',[
+                'usernom' => $usernom
+            ]);
+        }
     }
     /**
     * @Route("/traitementdufichier",name="traitementdufichier")
     */
-    public function traitementdufichier(Request $request,EntityManagerInterface $manager): Response 
+    public function traitementdufichier(Request $request,EntityManagerInterface $manager,SessionInterface $session): Response 
     {
         /*$recupfichier = $request->request->get("myfile"); //recuperation de valeur saisir*/
         $uploads_dir = '/home/etudrt/RunnianLU/public/uploads';
@@ -151,6 +165,19 @@ class ServeurController extends AbstractController
             $myfile -> setActif(true);
             $manager -> persist($myfile);
             $manager -> flush();
+
+            $vs = $session -> get("nomsession");
+            $utilisateur = $manager -> getRepository(Utilisateur::class)->findOneById($vs);
+            /*$Id_utilisateur = $utilisateur->getId();*/
+            $document = $manager -> getRepository(Document::class)->findOneBy([ 'Chemin' => $name ]);
+            /*$Id_document = $document-> getId();*/
+            $auto = $manager -> getRepository(Authorisation::class)->findOneById($vs);
+            $document_acces = new Acces ();
+            $document_acces -> setUtil($utilisateur);
+            $document_acces -> setDoc($document);
+            $document_acces -> setAuto($auto);
+            $manager -> persist($document_acces);
+            $manager -> flush();
         }
         else{
             $txt = "Oops Erreur!";
@@ -159,5 +186,26 @@ class ServeurController extends AbstractController
             'txt' => $txt,
         ]);
         /*return $this->redirectToRoute ('list_inscription');*/
+    }
+    /**
+     * @Route("/list_fichiers", name="list_fichiers")
+     */
+    public function list_fichiers(Request $request,EntityManagerInterface $manager,SessionInterface $session): Response
+    {
+        $vs = $session -> get("nomsession");
+        if($vs == NULL){
+            return $this->redirectToRoute ('serveur');
+        }
+        else{
+            $utilisateur = $manager -> getRepository(Utilisateur::class)->findOneById($vs);//recuperation de valeur dans Utilisateur-id
+            $lst_fichiers_util=$manager->getRepository(Acces::class)->findBy(['util' => $utilisateur]); //Document.php private valeur
+            $lst_fichiers_util2=$manager->getRepository(Document::class)->findAll(['id' => $lst_fichiers_util=$manager]);
+            //Valeur de retour
+            return $this->render('serveur/list_fichiers.html.twig',[
+                'list_fichiers' => $lst_fichiers_util2,
+            ]);
+        }
+     
+        
     }
 }

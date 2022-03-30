@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste de utilisateur_fichiers{% endblock %}
+
+{% block body %}
+
+<div class="example-wrapper" align="center">
+    <div id="haut"><h2 align="center">JonasLu's blog </h2></div>
+    <table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Nom_du_fichier</th>
+      <th scope="col">Date_upload</th>
+      <th scope="col">Actif</th>
+      <th scope="col">Operation</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for item in list_fichiers %}  <!--le variable dans le controller.php-->
+    <tr class="table-active">
+      <th scope="row">{{item.id}}</th>
+      <td>{{item.Chemin}}</td>
+      <td>{{item.Date|date('Y-m-d')}}</td>
+      <td>{{item.Actif}}</td>
+      <td><a href="/supprimerUtilisateur/{{ item.id }}" target="_blank"> <input type="button" class="btn btn-danger" value="Supprimer"> </a></td>
+    </tr>
+    {% endfor %} <!--Arreter de création de tableau-->
+  </tbody>
+</table>
+	<tr>
+		<td><a href="/serveur">
+		<input type="button" class="btn btn-danger" id="btn1" value="retour"/></a>
+		</td>
+	</tr>
+</div>
+{% endblock %}
